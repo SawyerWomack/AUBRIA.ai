@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AUBRIA — Our Team</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --blue:        #0f2d6e;
+    --blue-mid:    #1a4db8;
+    --blue-bright: #2e72e8;
+    --blue-light:  #6aaeff;
+    --orange:      #e85a0a;
+    --orange-light:#ff7430;
+    --orange-pale: #fff3ed;
+    --white:       #ffffff;
+    --gray-50:     #f8faff;
+    --gray-100:    #eef2fa;
+    --gray-200:    #d8e2f4;
+    --gray-400:    #8a9ec4;
+    --gray-600:    #4a5e82;
+    --text-dark:   #0a1628;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Space Grotesk', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--white);
+    color: var(--text-dark);
+    font-family: var(--sans);
+    font-weight: 400;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 3rem;
+    height: 60px;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--gray-200);
+  }
+  .nav-logo {
+    font-family: var(--mono);
+    font-size: 1.1rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: var(--orange);
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+  .nav-logo .bracket { color: var(--orange); font-weight: 300; }
+  .nav-logo .logo-name { color: var(--blue); }
+  .nav-badge {
+    font-family: var(--mono);
+    font-size: 0.58rem;
+    background: var(--orange);
+    color: white;
+    padding: 0.15rem 0.5rem;
+    border-radius: 2px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-left: 0.25rem;
+  }
+  nav ul { list-style: none; display: flex; gap: 0; }
+  .nav-link {
+    display: block;
+    color: var(--gray-600);
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    padding: 0 1.2rem;
+    height: 60px;
+    line-height: 60px;
+    border-left: 1px solid var(--gray-200);
+    transition: color 0.2s, background 0.2s;
+  }
+  .nav-link:hover { color: var(--orange); background: var(--orange-pale); }
+
+  /* ── PAGE HEADER (hero-style) ── */
+  .page-header {
+    position: relative;
+    background: var(--text-dark);
+    padding: 8rem 3rem 5rem;
+    overflow: hidden;
+  }
+  .page-header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(46,114,232,0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(46,114,232,0.08) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+  }
+  /* Subtle orange glow bottom-left */
+  .page-header::after {
+    content: '';
+    position: absolute;
+    bottom: -60px; left: -60px;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(232,90,10,0.18) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .page-header-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 1020px;
+    margin: 0 auto;
+  }
+  .page-header-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.6);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards 0.1s;
+  }
+  .page-header-label::before { content: '//'; color: var(--orange-light); margin-right: 4px; }
+  .page-header h1 {
+    font-size: clamp(2.2rem, 5vw, 3.6rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    color: #fff;
+    margin-bottom: 1rem;
+    opacity: 0;
+    animation: fadeUp 0.75s ease forwards 0.25s;
+  }
+  .page-header h1 span { color: var(--orange-light); }
+  .page-header-sub {
+    font-size: 1rem;
+    color: rgba(255,255,255,0.65);
+    max-width: 520px;
+    line-height: 1.75;
+    opacity: 0;
+    animation: fadeUp 0.75s ease forwards 0.4s;
+  }
+
+  /* ── RULE ── */
+  .rule {
+    max-width: 1020px;
+    margin: 0 auto;
+    padding: 0 3rem;
+    border: none;
+    border-top: 1px solid var(--gray-200);
+  }
+
+  /* ── SECTIONS ── */
+  .section {
+    max-width: 1020px;
+    margin: 0 auto;
+    padding: 5rem 3rem;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 3rem;
+  }
+  .section-num {
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    color: var(--orange);
+    letter-spacing: 0.1em;
+    background: var(--orange-pale);
+    border: 1px solid rgba(232,90,10,0.2);
+    padding: 0.2rem 0.6rem;
+    border-radius: 3px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  h2 {
+    font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.15;
+    color: var(--text-dark);
+  }
+  h2 span { color: var(--blue-bright); }
+
+  /* ── STORY ENTRY ROWS ── */
+  /* Each person gets a two-column row: photo | info card, alternating */
+  .story-entries { display: flex; flex-direction: column; gap: 2.5rem; }
+
+  .story-entry {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 2rem;
+    align-items: stretch;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.65s ease, transform 0.65s ease;
+  }
+  .story-entry.visible { opacity: 1; transform: none; }
+  .story-entry.reverse { grid-template-columns: 1fr 260px; }
+  .story-entry.reverse .story-photo { order: 2; }
+  .story-entry.reverse .story-info  { order: 1; }
+
+  /* Photo column */
+  .story-photo {
+    position: relative;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid var(--gray-200);
+    background: var(--gray-100);
+    min-height: 280px;
+  }
+  .story-photo img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  /* Orange left-edge accent on photo */
+  .story-photo::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--orange);
+    z-index: 1;
+  }
+  .story-entry.reverse .story-photo::before {
+    left: auto; right: 0;
+  }
+
+  /* Info card */
+  .story-info {
+    background: var(--gray-50);
+    border: 1px solid var(--gray-200);
+    border-radius: 6px;
+    padding: 2rem 2rem 2rem 2.25rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .story-info:hover {
+    border-color: rgba(46,114,232,0.4);
+    box-shadow: 0 4px 24px rgba(46,114,232,0.08);
+  }
+  /* Subtle grid texture on card */
+  .story-info::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(46,114,232,0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(46,114,232,0.035) 1px, transparent 1px);
+    background-size: 28px 28px;
+    pointer-events: none;
+  }
+  .story-info-inner { position: relative; z-index: 1; }
+
+  .story-mono-label {
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--orange);
+    font-weight: 500;
+    margin-bottom: 0.3rem;
+  }
+  .story-mono-label::before { content: '// '; color: var(--gray-400); }
+
+  .story-name {
+    font-size: 1.35rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text-dark);
+    margin-bottom: 0.2rem;
+    line-height: 1.2;
+  }
+  .story-role {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--blue-bright);
+    letter-spacing: 0.04em;
+    margin-bottom: 1.1rem;
+  }
+  .story-body {
+    font-size: 0.93rem;
+    color: var(--gray-600);
+    line-height: 1.8;
+  }
+  .story-body strong { color: var(--text-dark); font-weight: 600; }
+
+  /* ── TEAM SECTION ── */
+  /* Wide single card containing the student grid */
+  .team-section-card {
+    background: var(--gray-50);
+    border: 1px solid var(--gray-200);
+    border-radius: 6px;
+    padding: 2.5rem 2.5rem 2rem;
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.65s ease, transform 0.65s ease;
+  }
+  .team-section-card.visible { opacity: 1; transform: none; }
+  .team-section-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: linear-gradient(to bottom, var(--orange), var(--blue-bright));
+  }
+  /* Grid texture */
+  .team-section-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(46,114,232,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(46,114,232,0.03) 1px, transparent 1px);
+    background-size: 28px 28px;
+    pointer-events: none;
+  }
+  .team-section-inner { position: relative; z-index: 1; }
+
+  .team-card-header { margin-bottom: 2rem; }
+  .team-card-mono {
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 0.3rem;
+  }
+  .team-card-mono::before { content: '// '; color: var(--gray-400); }
+  .team-card-title {
+    font-size: 1.35rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text-dark);
+    margin-bottom: 0.2rem;
+  }
+  .team-card-role {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--blue-bright);
+    letter-spacing: 0.04em;
+    margin-bottom: 1rem;
+  }
+  .team-card-body {
+    font-size: 0.93rem;
+    color: var(--gray-600);
+    line-height: 1.8;
+    max-width: 700px;
+  }
+
+  /* Student photo cards row */
+  .student-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--gray-200);
+  }
+  .student-chip {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid var(--gray-200);
+    cursor: default;
+    transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
+  }
+  .student-chip:hover {
+    border-color: var(--blue-light);
+    box-shadow: 0 8px 28px rgba(46,114,232,0.18);
+    transform: translateY(-3px);
+  }
+  /* Full-bleed photo */
+  .student-avatar {
+    position: absolute;
+    inset: 0;
+  }
+  .student-avatar img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+  }
+  .student-chip:hover .student-avatar img { transform: scale(1.04); }
+  /* Gradient overlay so text is readable */
+  .student-chip::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      rgba(10,22,40,0.88) 0%,
+      rgba(10,22,40,0.45) 45%,
+      rgba(10,22,40,0.0) 75%
+    );
+    pointer-events: none;
+  }
+  /* Text pinned to bottom */
+  .student-chip-text {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    z-index: 2;
+    padding: 1rem 1rem 1rem 1.1rem;
+  }
+  /* Orange left edge accent */
+  .student-chip-text::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 16%; bottom: 16%;
+    width: 3px;
+    background: var(--orange);
+    border-radius: 0 2px 2px 0;
+  }
+  .student-chip-name {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.25;
+    margin-bottom: 0.2rem;
+  }
+  .student-chip-role {
+    font-family: var(--mono);
+    font-size: 0.58rem;
+    color: rgba(255,255,255,0.65);
+    letter-spacing: 0.06em;
+  }
+
+  /* Team affil footer */
+  .team-affil-row {
+    margin-top: 1.75rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--gray-200);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+  }
+  .team-affil-label {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    color: var(--gray-400);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-right: 0.25rem;
+  }
+  .affil-tag {
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    padding: 0.2rem 0.65rem;
+    border-radius: 3px;
+    letter-spacing: 0.05em;
+    font-weight: 500;
+  }
+  .affil-tag-blue  { background: rgba(46,114,232,0.1); color: var(--blue-bright); border: 1px solid rgba(46,114,232,0.2); }
+  .affil-tag-orange{ background: var(--orange-pale); color: var(--orange); border: 1px solid rgba(232,90,10,0.2); }
+
+  /* ── CTA BAND ── */
+  .cta-band {
+    background: var(--text-dark);
+    position: relative;
+    overflow: hidden;
+    padding: 5rem 3rem;
+    text-align: center;
+  }
+  .cta-band::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(46,114,232,0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(46,114,232,0.08) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  .cta-inner { position: relative; z-index: 1; }
+  .cta-band .section-num { background: rgba(232,90,10,0.2); border-color: rgba(232,90,10,0.3); color: var(--orange-light); }
+  .cta-band h2 { color: #fff; margin: 0.8rem auto 1rem; max-width: 540px; }
+  .cta-band h2 span { color: var(--orange-light); }
+  .cta-band p { color: var(--gray-400); font-size: 0.95rem; max-width: 440px; margin: 0 auto; }
+  .btn-group { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 2rem; }
+  .btn-cta-primary { background: var(--orange); color: #fff; padding: 0.75rem 2rem; border-radius: 4px; text-decoration: none; font-weight: 600; font-size: 0.85rem; transition: all 0.2s; display: inline-block; font-family: var(--sans); }
+  .btn-cta-primary:hover { background: var(--orange-light); box-shadow: 0 4px 20px rgba(232,90,10,0.4); transform: translateY(-1px); }
+  .btn-cta-outline { border: 1px solid rgba(255,255,255,0.25); color: rgba(255,255,255,0.8); background: transparent; padding: 0.75rem 2rem; border-radius: 4px; text-decoration: none; font-weight: 600; font-size: 0.85rem; transition: all 0.2s; display: inline-block; font-family: var(--sans); }
+  .btn-cta-outline:hover { border-color: #fff; color: #fff; background: rgba(255,255,255,0.06); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #f4f6fa;
+    padding: 2rem 3rem;
+    border-top: 1px solid var(--gray-200);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-logo { font-family: var(--mono); font-size: 1rem; font-weight: 500; color: var(--text-dark); letter-spacing: 0.08em; }
+  .footer-logo span { color: var(--orange); }
+  .footer-info { font-family: var(--mono); font-size: 0.63rem; color: var(--gray-400); text-align: right; line-height: 1.9; letter-spacing: 0.03em; }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav { padding: 0 1.5rem; }
+    .nav-link { padding: 0 0.8rem; font-size: 0.75rem; }
+    .page-header { padding: 7rem 1.5rem 3.5rem; }
+    .section { padding: 3.5rem 1.5rem; }
+    .story-entry,
+    .story-entry.reverse {
+      grid-template-columns: 1fr;
+    }
+    .story-entry.reverse .story-photo { order: 0; }
+    .story-entry.reverse .story-info  { order: 0; }
+    .story-photo { min-height: 220px; }
+    .student-row { grid-template-columns: 1fr; }
+    footer { flex-direction: column; gap: 1rem; text-align: center; }
+    .footer-info { text-align: center; }
+    .cta-band { padding: 3.5rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <span class="bracket">[</span>
+    <span class="logo-name">AUBRIA</span>
+    <span class="bracket">]</span>
+    <span class="nav-badge">v1.0</span>
+  </div>
+  <ul>
+    <li><a href="index.html" class="nav-link">Home</a></li>
+    <li><a href="#story" class="nav-link">Our Team</a></li>
+    <li><a href="#contact" class="nav-link">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="page-header-inner">
+    <div class="page-header-label">Auburn University · Meet the Team</div>
+    <h1>Our Team,<br><span>Auburn-Built</span></h1>
+    <p class="page-header-sub">The faculty, researchers, and students behind AUBRIA — a conference-ready AI keynote experience built within Auburn's research community.</p>
+  </div>
+</div>
+
+<hr class="rule">
+
+<!-- STORY SECTION -->
+<div class="section" id="story">
+
+  <div class="section-header reveal">
+    <span class="section-num">01 / TEAM</span>
+    <h2>The people behind <span>AUBRIA</span></h2>
+  </div>
+
+  <div class="story-entries">
+
+    <!-- Christine Cline -->
+    <div class="story-entry reveal">
+      <div class="story-photo">
+        <img src="/our-story/cc.jpg" alt="Christine Cline" />
+      </div>
+      <div class="story-info">
+        <div class="story-info-inner">
+          <div class="story-mono-label">The Spark</div>
+          <div class="story-name">Christine Cline</div>
+          <div class="story-role">Director, Proposal Services &amp; Faculty Support (PSFS)</div>
+          <p class="story-body">
+            AUBRIA began at Auburn University as a bold Team Science idea. While planning the 2026
+            <strong>AI@AU / Team Science Series: Building Research Communities in AI</strong>
+            (Showcase &amp; Workshop), Christine envisioned opening the event with something entirely
+            new — an AI-generated keynote speaker built to represent Auburn's research community in
+            a modern, engaging way.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dr. Jennifer Kerpelman (reversed) -->
+    <div class="story-entry reverse reveal">
+      <div class="story-photo">
+        <img src="/our-story/jk.jpg" alt="Dr. Jennifer Kerpelman" />
+      </div>
+      <div class="story-info">
+        <div class="story-info-inner">
+          <div class="story-mono-label">The Vision</div>
+          <div class="story-name">Dr. Jennifer Kerpelman</div>
+          <div class="story-role">Associate Vice President for Research · Office of the Senior Vice President for Research and Economic Development · Auburn University</div>
+          <p class="story-body">
+            Christine shared the idea with <strong>Dr. Jennifer Kerpelman</strong>, who helped
+            shape it into a clear event vision. She then carried the concept forward to
+            <strong>Dr. Gerry Dozier</strong> so the idea could move from "what if" to
+            "let's build it."
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dr. Gerry Dozier -->
+    <div class="story-entry reveal">
+      <div class="story-photo">
+        <img src="/our-story/gd.jpg" alt="Dr. Gerry Dozier" />
+      </div>
+      <div class="story-info">
+        <div class="story-info-inner">
+          <div class="story-mono-label">The Build</div>
+          <div class="story-name">Dr. Gerry Dozier</div>
+          <div class="story-role">Faculty Advisor</div>
+          <p class="story-body">
+            <strong>Dr. Dozier</strong> assembled a student development team from CSSE to bring
+            AUBRIA to life, combining AI generation, storytelling, and media production into a
+            conference-ready keynote experience designed for Auburn audiences.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dr. Hari Narayanan (reversed) -->
+    <div class="story-entry reverse reveal">
+      <div class="story-photo">
+        <img src="/our-story/hn.jpg" alt="Dr. Hari Narayanan" />
+      </div>
+      <div class="story-info">
+        <div class="story-info-inner">
+          <div class="story-mono-label">The Polish</div>
+          <div class="story-name">Dr. Hari Narayanan</div>
+          <div class="story-role">Chair, CSSE Department</div>
+          <p class="story-body">
+            With guidance from <strong>Dr. Jennifer Kerpelman</strong>, <strong>Dr. Hari Narayanan</strong>,
+            and <strong>Christine Cline</strong>, the student team refined AUBRIA into a polished
+            keynote experience built with care for clarity, credibility, and an Auburn-proud
+            visual identity.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Student Team — wide card -->
+    <div class="team-section-card reveal">
+      <div class="team-section-inner">
+        <div class="team-card-header">
+          <div class="team-card-mono">The Student Team</div>
+          <div class="team-card-title">The AUBRIA Student Team</div>
+          <div class="team-card-role">CSSE · Samuel Ginn College of Engineering, Auburn University</div>
+          <p class="team-card-body">
+            AUBRIA is a student-led team within CSSE, passionate about Artificial Intelligence,
+            Agentic AI, and Cybersecurity. We are affiliated with <strong>AI@AU</strong> (Auburn
+            University Artificial Intelligence Initiative) and <strong>AU-CAICE</strong> (Auburn
+            University Center for AI &amp; Cybersecurity Engineering). Currently, we develop AUBRIA
+            Keynote Talks for Auburn University conferences, workshops, meetings, and research events.
+          </p>
+        </div>
+
+        <div class="student-row">
+
+          <div class="student-chip">
+            <div class="student-avatar">
+              <img src="/our-story/team1.jpg" alt="Jahidul Arafat" />
+            </div>
+            <div class="student-chip-text">
+              <div class="student-chip-name">Jahidul Arafat</div>
+              <div class="student-chip-role">PhD CSSE Student</div>
+            </div>
+          </div>
+
+          <div class="student-chip">
+            <div class="student-avatar">
+              <img src="/our-story/team2.jpg" alt="Bhuvaneshwari Bodakuntla" />
+            </div>
+            <div class="student-chip-text">
+              <div class="student-chip-name">Bhuvaneshwari Bodakuntla</div>
+              <div class="student-chip-role">MS Data Engineering Student</div>
+            </div>
+          </div>
+
+          <div class="student-chip">
+            <div class="student-avatar">
+              <img src="/our-story/team3.jpg" alt="Sawyer Womack" />
+            </div>
+            <div class="student-chip-text">
+              <div class="student-chip-name">Sawyer Womack</div>
+              <div class="student-chip-role">BS CSSE Student</div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="team-affil-row">
+          <span class="team-affil-label">Affiliated with</span>
+          <span class="affil-tag affil-tag-orange">AI@AU</span>
+          <span class="affil-tag affil-tag-orange">AU-CAICE</span>
+          <span class="affil-tag affil-tag-blue">CSSE Department</span>
+          <span class="affil-tag affil-tag-blue">Samuel Ginn College of Engineering</span>
+          <span class="affil-tag affil-tag-blue">Auburn University</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-band" id="contact">
+  <div class="cta-inner">
+    <span class="section-num">02 / DEPLOY</span>
+    <h2>Interested in an <span>AUBRIA</span> Keynote Talk?</h2>
+    <p>If you'd like our team to develop an AUBRIA keynote for your conference, workshop, meeting, or event, reach out to us or our faculty advisor, Dr. Gerry Dozier.</p>
+    <div class="btn-group">
+      <a href="/request" class="btn-cta-primary">Get Started →</a>
+      <a href="index.html" class="btn-cta-outline">Back to Home</a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">[<span>AUBRIA</span>]</div>
+  <div class="footer-info">
+    Samuel Ginn College of Engineering · Auburn University<br>
+    Department of CSSE · Faculty Advisor: Dr. Gerry Dozier
+  </div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
