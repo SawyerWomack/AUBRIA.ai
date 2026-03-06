@@ -136,7 +136,6 @@
     display: block;
   }
 
-  /* Dark gradient overlay so text is readable */
   .hero-bg::after {
     content: '';
     position: absolute;
@@ -150,7 +149,6 @@
       );
   }
 
-  /* Grid overlay for techy feel */
   .hero-grid {
     position: absolute;
     inset: 0;
@@ -237,7 +235,6 @@
   .chip-blue  { background: rgba(46,114,232,0.25); color: var(--blue-light); border: 1px solid rgba(106,174,255,0.3); }
   .chip-orange{ background: rgba(232,90,10,0.25);  color: var(--orange-light); border: 1px solid rgba(255,116,48,0.35); }
 
-  /* Scroll indicator */
   .scroll-hint {
     position: absolute;
     bottom: 1.5rem;
@@ -452,7 +449,6 @@
   }
   .timeline-item strong { color: var(--text-dark); font-weight: 600; }
 
-  /* Story aside cards */
   .story-card {
     background: var(--gray-50);
     border: 1px solid var(--gray-200);
@@ -494,6 +490,105 @@
   .team-chip-icon { color: var(--orange); font-size: 1rem; flex-shrink: 0; }
   .team-chip-title { font-size: 0.83rem; font-weight: 600; color: var(--text-dark); }
   .team-chip-sub { font-family: var(--mono); font-size: 0.6rem; color: var(--gray-400); letter-spacing: 0.04em; }
+
+  /* ── VIDEO SECTION ── */
+  .video-section {
+    background: var(--gray-50);
+    border-top: 1px solid var(--gray-200);
+    border-bottom: 1px solid var(--gray-200);
+    padding: 5rem 3rem;
+  }
+
+  .video-inner {
+    max-width: 1020px;
+    margin: 0 auto;
+  }
+
+  .video-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .video-tagline {
+    font-size: 0.97rem;
+    color: var(--gray-600);
+    margin-bottom: 2.5rem;
+    line-height: 1.7;
+    max-width: 560px;
+  }
+
+  .video-frame-wrap {
+    position: relative;
+    width: 100%;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow:
+      0 2px 4px rgba(10,22,40,0.06),
+      0 8px 24px rgba(10,22,40,0.1),
+      0 24px 64px rgba(10,22,40,0.12);
+    border: 1px solid var(--gray-200);
+    /* 16:9 aspect ratio */
+    aspect-ratio: 16 / 9;
+  }
+
+  .video-frame-wrap iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+  }
+
+  /* Decorative corner accents */
+  .video-frame-wrap::before,
+  .video-frame-wrap::after {
+    content: '';
+    position: absolute;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .video-frame-wrap::before {
+    top: 0; left: 0;
+    width: 40px; height: 40px;
+    border-top: 2px solid var(--orange);
+    border-left: 2px solid var(--orange);
+    border-radius: 10px 0 0 0;
+  }
+  .video-frame-wrap::after {
+    bottom: 0; right: 0;
+    width: 40px; height: 40px;
+    border-bottom: 2px solid var(--blue-bright);
+    border-right: 2px solid var(--blue-bright);
+    border-radius: 0 0 10px 0;
+  }
+
+  .video-meta {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 1.25rem;
+    flex-wrap: wrap;
+  }
+
+  .video-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    color: var(--gray-400);
+    letter-spacing: 0.06em;
+  }
+
+  .video-meta-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--orange);
+    flex-shrink: 0;
+  }
 
   /* ── CTA BAND ── */
   .cta-band {
@@ -580,6 +675,8 @@
     .footer-info { text-align: center; }
     .cta-band { padding: 3.5rem 1.5rem; }
     .scroll-hint { display: none; }
+    .video-section { padding: 3.5rem 1.5rem; }
+    .video-meta { gap: 1rem; }
   }
 </style>
 </head>
@@ -601,7 +698,7 @@
   </ul>
 </nav>
 
-<!-- HERO — full viewport with photo background -->
+<!-- HERO -->
 <div class="hero">
   <div class="hero-bg">
     <img src="Gemini_Generated_Image_i7aabji7aabji7aa.png" alt="AUBRIA AI Keynote Speaker">
@@ -751,10 +848,52 @@
   </div>
 </div>
 
+<!-- VIDEO SECTION -->
+<div class="video-section" id="keynote-demo">
+  <div class="video-inner">
+    <div class="video-header reveal">
+      <span class="section-num">03 / DEMO</span>
+      <h2>See <span>AUBRIA</span> in action</h2>
+    </div>
+    <p class="video-tagline reveal">Watch a live keynote talk — engineered by Auburn students, delivered by AI.</p>
+
+    <div class="video-frame-wrap reveal">
+      <!--
+        ╔══════════════════════════════════════════════════════════════╗
+        ║  SWAP YOUR YOUTUBE VIDEO ID BELOW                           ║
+        ║  Replace  YOUR_VIDEO_ID  with the ID from your YouTube URL  ║
+        ║  e.g. for https://youtu.be/dQw4w9WgXcQ → use dQw4w9WgXcQ   ║
+        ╚══════════════════════════════════════════════════════════════╝
+      -->
+      <iframe
+        src="https://www.youtube.com/embed/YOUR_VIDEO_ID?rel=0&modestbranding=1&color=white"
+        title="AUBRIA AI Keynote Speaker Demo"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen>
+      </iframe>
+    </div>
+
+    <div class="video-meta reveal">
+      <div class="video-meta-item">
+        <span class="video-meta-dot"></span>
+        Auburn University · CSSE
+      </div>
+      <div class="video-meta-item">
+        <span class="video-meta-dot" style="background: var(--blue-bright);"></span>
+        AI@AU Showcase &amp; Workshop · 2026
+      </div>
+      <div class="video-meta-item">
+        <span class="video-meta-dot" style="background: var(--gray-400);"></span>
+        AI-Generated Keynote Talk
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- CTA -->
 <div class="cta-band" id="contact">
   <div class="cta-inner">
-    <span class="section-num">03 / DEPLOY</span>
+    <span class="section-num">04 / DEPLOY</span>
     <h2>Deploy <span>AUBRIA</span> at your next event.</h2>
     <p>AI-generated keynotes engineered for conferences, workshops, meetings, and beyond.</p>
     <div class="btn-group">
@@ -775,17 +914,14 @@
 
 
 <script>
-  // Mark JS as active — reveals only hide when this class is present
   document.body.classList.add('js-ready');
 
-  // Nav scroll effect
   const nav = document.getElementById('nav');
   window.addEventListener('scroll', () => {
     if (window.scrollY > 80) nav.classList.add('scrolled');
     else nav.classList.remove('scrolled');
   });
 
-  // Scroll reveal
   const reveals = document.querySelectorAll('.reveal');
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry, i) => {
