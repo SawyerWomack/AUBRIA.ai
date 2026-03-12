@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AUBRIA — Auburn University AI Keynote</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --blue:        #0f2d6e;
+    --blue-mid:    #1a4db8;
+    --blue-bright: #2e72e8;
+    --blue-light:  #6aaeff;
+    --orange:      #e85a0a;
+    --orange-light:#ff7430;
+    --orange-pale: #fff3ed;
+    --white:       #ffffff;
+    --gray-50:     #f8faff;
+    --gray-100:    #eef2fa;
+    --gray-200:    #d8e2f4;
+    --gray-400:    #8a9ec4;
+    --gray-600:    #4a5e82;
+    --text-dark:   #0a1628;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Space Grotesk', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--white);
+    color: var(--text-dark);
+    font-family: var(--sans);
+    font-weight: 400;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 3rem;
+    height: 60px;
+    background: rgba(255,255,255,0.0);
+    backdrop-filter: blur(0px);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    transition: background 0.4s, backdrop-filter 0.4s, border-color 0.4s;
+  }
+
+  nav.scrolled {
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--gray-200);
+  }
+
+  nav.scrolled .nav-logo { color: var(--orange); }
+  nav.scrolled .nav-logo .bracket { color: var(--orange); }
+  nav.scrolled .nav-logo .logo-name { color: var(--blue); }
+  nav.scrolled .nav-badge { background: var(--orange); }
+  nav.scrolled nav-ul-link { color: var(--gray-600); }
+  nav.scrolled .nav-link { color: var(--gray-600); }
+  nav.scrolled .nav-link:hover { color: var(--orange); background: var(--orange-pale); }
+
+  .nav-logo {
+    font-family: var(--mono);
+    font-size: 1.1rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    transition: color 0.3s;
+  }
+
+  .nav-logo .bracket { color: rgba(255,255,255,0.6); font-weight: 300; transition: color 0.3s; }
+  .nav-logo .logo-name { color: #fff; transition: color 0.3s; }
+
+  .nav-badge {
+    font-family: var(--mono);
+    font-size: 0.58rem;
+    background: rgba(255,255,255,0.25);
+    color: white;
+    padding: 0.15rem 0.5rem;
+    border-radius: 2px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-left: 0.25rem;
+    transition: background 0.3s;
+  }
+
+  nav ul { list-style: none; display: flex; gap: 0; }
+  .nav-link {
+    display: block;
+    color: rgba(255,255,255,0.85);
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    padding: 0 1.2rem;
+    height: 60px;
+    line-height: 60px;
+    border-left: 1px solid rgba(255,255,255,0.12);
+    transition: color 0.2s, background 0.2s, border-color 0.3s;
+  }
+  .nav-link:hover { color: #fff; background: rgba(255,255,255,0.1); }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    height: 100vh;
+    min-height: 600px;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .hero-bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+  }
+
+  .hero-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(to bottom,
+        rgba(10,22,40,0.35) 0%,
+        rgba(10,22,40,0.2) 30%,
+        rgba(10,22,40,0.55) 65%,
+        rgba(10,22,40,0.92) 100%
+      );
+  }
+
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background-image:
+      linear-gradient(rgba(46,114,232,0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(46,114,232,0.08) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 1020px;
+    margin: 0 auto;
+    padding: 0 3rem 4.5rem;
+  }
+
+  .hero-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards 0.2s;
+  }
+  .hero-label::before { content: '//'; color: var(--orange-light); }
+
+  .hero h1 {
+    font-size: clamp(3rem, 8vw, 6rem);
+    font-weight: 700;
+    line-height: 1.0;
+    letter-spacing: -0.03em;
+    color: #fff;
+    margin-bottom: 1rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.35s;
+  }
+
+  .hero h1 .accent { color: var(--orange-light); }
+
+  .hero-sub {
+    font-size: 1.05rem;
+    color: rgba(255,255,255,0.72);
+    max-width: 560px;
+    margin-bottom: 2rem;
+    line-height: 1.7;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.5s;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.65s;
+  }
+
+  .hero-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.8s;
+  }
+
+  .chip {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    font-weight: 500;
+    padding: 0.25rem 0.75rem;
+    border-radius: 3px;
+    letter-spacing: 0.06em;
+  }
+  .chip-blue  { background: rgba(46,114,232,0.25); color: var(--blue-light); border: 1px solid rgba(106,174,255,0.3); }
+  .chip-orange{ background: rgba(232,90,10,0.25);  color: var(--orange-light); border: 1px solid rgba(255,116,48,0.35); }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 1.5rem;
+    right: 3rem;
+    z-index: 2;
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 0.1em;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0;
+    animation: fadeIn 1.2s ease forwards 1.2s;
+  }
+  .scroll-hint::before {
+    content: '';
+    width: 1px;
+    height: 32px;
+    background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.3));
+  }
+
+  /* ── BUTTONS ── */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.7rem 1.6rem;
+    font-family: var(--sans);
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: all 0.2s;
+    cursor: pointer;
+    border: none;
+  }
+  .btn-primary { background: var(--orange); color: #fff; }
+  .btn-primary:hover { background: var(--orange-light); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(232,90,10,0.35); }
+  .btn-ghost { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.3); backdrop-filter: blur(8px); }
+  .btn-ghost:hover { background: rgba(255,255,255,0.2); border-color: rgba(255,255,255,0.6); }
+
+  /* ── RULE ── */
+  .rule {
+    max-width: 1020px;
+    margin: 0 auto;
+    padding: 0 3rem;
+    border: none;
+    border-top: 1px solid var(--gray-200);
+  }
+
+  /* ── SECTIONS ── */
+  .section {
+    max-width: 1020px;
+    margin: 0 auto;
+    padding: 5rem 3rem;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .section-num {
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    color: var(--orange);
+    letter-spacing: 0.1em;
+    background: var(--orange-pale);
+    border: 1px solid rgba(232,90,10,0.2);
+    padding: 0.2rem 0.6rem;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+
+  h2 {
+    font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.15;
+    color: var(--text-dark);
+  }
+  h2 span { color: var(--blue-bright); }
+
+  /* ── ABOUT ── */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 3.5rem;
+    align-items: start;
+  }
+
+  .prose {
+    font-size: 0.97rem;
+    color: var(--gray-600);
+    line-height: 1.85;
+  }
+  .prose p + p { margin-top: 1.1rem; }
+  .prose strong { color: var(--text-dark); font-weight: 600; }
+
+  /* ── AFFIL CARDS ── */
+  .affil-stack { display: flex; flex-direction: column; gap: 0.75rem; }
+
+  .affil-card {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+  }
+  .affil-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--orange);
+  }
+  .affil-card:hover {
+    border-color: var(--blue-light);
+    transform: translateX(3px);
+    box-shadow: 0 4px 20px rgba(46,114,232,0.1);
+  }
+
+  .affil-label {
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gray-400);
+    font-weight: 500;
+  }
+  .affil-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    line-height: 1.35;
+  }
+  .affil-link {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    color: var(--blue-bright);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .affil-link:hover { color: var(--orange); }
+
+  .affil-section-label {
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    color: var(--gray-400);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+
+  /* ── STORY ── */
+  .story-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 3.5rem;
+    align-items: start;
+  }
+
+  .timeline {
+    position: relative;
+    padding-left: 2rem;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0.5rem; bottom: 0.5rem;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--orange), var(--blue-bright), var(--blue-light));
+  }
+  .timeline-item {
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: 2.2rem;
+  }
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -2.25rem;
+    top: 0.42rem;
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    background: var(--white);
+    border: 2px solid var(--orange);
+    box-shadow: 0 0 0 3px rgba(232,90,10,0.12);
+  }
+  .timeline-label {
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--orange);
+    font-weight: 500;
+    margin-bottom: 0.35rem;
+  }
+  .timeline-item p {
+    font-size: 0.95rem;
+    color: var(--gray-600);
+    line-height: 1.8;
+  }
+  .timeline-item strong { color: var(--text-dark); font-weight: 600; }
+
+  .story-card {
+    background: var(--gray-50);
+    border: 1px solid var(--gray-200);
+    border-radius: 8px;
+    padding: 1.4rem;
+  }
+  .story-card + .story-card { margin-top: 1rem; }
+
+  .story-card-label {
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gray-400);
+    margin-bottom: 1rem;
+  }
+
+  .story-person {
+    padding: 0.7rem 0;
+    border-bottom: 1px solid var(--gray-200);
+  }
+  .story-person:last-child { border-bottom: none; padding-bottom: 0; }
+  .story-person:first-of-type { padding-top: 0; }
+
+  .person-name { font-size: 0.88rem; font-weight: 600; color: var(--text-dark); margin-bottom: 0.1rem; }
+  .person-role { font-family: var(--mono); font-size: 0.62rem; color: var(--blue-bright); letter-spacing: 0.04em; margin-bottom: 0.15rem; }
+  .person-note { font-size: 0.78rem; color: var(--gray-400); }
+
+  .team-chips { display: flex; flex-direction: column; gap: 0.6rem; }
+  .team-chip {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: 6px;
+  }
+  .team-chip-icon { color: var(--orange); font-size: 1rem; flex-shrink: 0; }
+  .team-chip-title { font-size: 0.83rem; font-weight: 600; color: var(--text-dark); }
+  .team-chip-sub { font-family: var(--mono); font-size: 0.6rem; color: var(--gray-400); letter-spacing: 0.04em; }
+
+  /* ── VIDEO SECTION ── */
+  .video-section {
+    background: var(--gray-50);
+    border-top: 1px solid var(--gray-200);
+    border-bottom: 1px solid var(--gray-200);
+    padding: 5rem 3rem;
+  }
+
+  .video-inner {
+    max-width: 1020px;
+    margin: 0 auto;
+  }
+
+  .video-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .video-tagline {
+    font-size: 0.97rem;
+    color: var(--gray-600);
+    margin-bottom: 2.5rem;
+    line-height: 1.7;
+    max-width: 560px;
+  }
+
+  .video-frame-wrap {
+    position: relative;
+    width: 100%;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow:
+      0 2px 4px rgba(10,22,40,0.06),
+      0 8px 24px rgba(10,22,40,0.1),
+      0 24px 64px rgba(10,22,40,0.12);
+    border: 1px solid var(--gray-200);
+    /* 16:9 aspect ratio */
+    aspect-ratio: 16 / 9;
+  }
+
+  .video-frame-wrap iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+  }
+
+  /* Decorative corner accents */
+  .video-frame-wrap::before,
+  .video-frame-wrap::after {
+    content: '';
+    position: absolute;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .video-frame-wrap::before {
+    top: 0; left: 0;
+    width: 40px; height: 40px;
+    border-top: 2px solid var(--orange);
+    border-left: 2px solid var(--orange);
+    border-radius: 10px 0 0 0;
+  }
+  .video-frame-wrap::after {
+    bottom: 0; right: 0;
+    width: 40px; height: 40px;
+    border-bottom: 2px solid var(--blue-bright);
+    border-right: 2px solid var(--blue-bright);
+    border-radius: 0 0 10px 0;
+  }
+
+  .video-meta {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 1.25rem;
+    flex-wrap: wrap;
+  }
+
+  .video-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    color: var(--gray-400);
+    letter-spacing: 0.06em;
+  }
+
+  .video-meta-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--orange);
+    flex-shrink: 0;
+  }
+
+  /* ── CTA BAND ── */
+  .cta-band {
+    background: var(--text-dark);
+    position: relative;
+    overflow: hidden;
+    padding: 5rem 3rem;
+    text-align: center;
+  }
+  .cta-band::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(46,114,232,0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(46,114,232,0.08) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  .cta-inner { position: relative; z-index: 1; }
+  .cta-band .section-num { background: rgba(232,90,10,0.2); border-color: rgba(232,90,10,0.3); color: var(--orange-light); }
+  .cta-band h2 { color: #fff; margin: 0.8rem auto 1rem; max-width: 540px; }
+  .cta-band h2 span { color: var(--orange-light); }
+  .cta-band p { color: var(--gray-400); margin-bottom: 0; font-size: 0.95rem; max-width: 440px; margin-left: auto; margin-right: auto; }
+  .btn-group { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 2rem; }
+  .btn-cta-primary { background: var(--orange); color: #fff; padding: 0.75rem 2rem; border-radius: 4px; text-decoration: none; font-weight: 600; font-size: 0.85rem; transition: all 0.2s; display: inline-block; }
+  .btn-cta-primary:hover { background: var(--orange-light); box-shadow: 0 4px 20px rgba(232,90,10,0.4); transform: translateY(-1px); }
+  .btn-cta-outline { border: 1px solid rgba(255,255,255,0.25); color: rgba(255,255,255,0.8); background: transparent; padding: 0.75rem 2rem; border-radius: 4px; text-decoration: none; font-weight: 600; font-size: 0.85rem; transition: all 0.2s; display: inline-block; }
+  .btn-cta-outline:hover { border-color: #fff; color: #fff; background: rgba(255,255,255,0.06); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #f4f6fa;
+    padding: 2rem 3rem;
+    border-top: 1px solid var(--gray-200);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-logo {
+    font-family: var(--mono);
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text-dark);
+    letter-spacing: 0.08em;
+  }
+  .footer-logo span { color: var(--orange); }
+  .footer-info {
+    font-family: var(--mono);
+    font-size: 0.63rem;
+    color: var(--gray-400);
+    text-align: right;
+    line-height: 1.9;
+    letter-spacing: 0.03em;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: opacity 0.65s ease, transform 0.65s ease;
+  }
+  .js-ready .reveal {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  .js-ready .reveal.visible { opacity: 1; transform: none; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav { padding: 0 1.5rem; }
+    .nav-link { padding: 0 0.8rem; font-size: 0.75rem; }
+    .hero-content { padding: 0 1.5rem 3.5rem; }
+    .section { padding-left: 1.5rem; padding-right: 1.5rem; }
+    .about-grid, .story-grid { grid-template-columns: 1fr; gap: 2rem; }
+    footer { flex-direction: column; gap: 1rem; text-align: center; }
+    .footer-info { text-align: center; }
+    .cta-band { padding: 3.5rem 1.5rem; }
+    .scroll-hint { display: none; }
+    .video-section { padding: 3.5rem 1.5rem; }
+    .video-meta { gap: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-logo">
+    <span class="bracket">[</span>
+    <span class="logo-name">AUBRIA</span>
+    <span class="bracket">]</span>
+    <span class="nav-badge">v1.0</span>
+  </div>
+  <ul>
+    <li><a href="#about" class="nav-link">About</a></li>
+    <li><a href="#story" class="nav-link">Our Story</a></li>
+    <li><a href="our-team.html" class="nav-link">Our Team</a></li>
+    <li><a href="#contact" class="nav-link">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg">
+    <img src="Gemini_Generated_Image_i7aabji7aabji7aa.png" alt="AUBRIA AI Keynote Speaker">
+  </div>
+  <div class="hero-grid"></div>
+
+  <div class="hero-content">
+    <div class="hero-label">Auburn University · AI-Generated Keynote System</div>
+    <h1>Meet<br><span class="accent">AUBRIA</span></h1>
+    <p class="hero-sub">A student-built AI keynote speaker system from the AI@AU LAB, Auburn University Artificial Intelligence Initiative — delivering intelligent, data-driven presentations for conferences, workshops, and research communities.</p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn btn-primary">Request a Keynote →</a>
+      <a href="#about" class="btn btn-ghost">Learn More</a>
+    </div>
+    <div class="hero-chips">
+      <span class="chip chip-blue">Agentic AI</span>
+      <span class="chip chip-blue">Cybersecurity</span>
+      <span class="chip chip-blue">NLP</span>
+      <span class="chip chip-orange">Auburn University</span>
+      <span class="chip chip-orange">CSSE</span>
+      <span class="chip chip-blue">AI@AU</span>
+    </div>
+  </div>
+
+  <div class="scroll-hint">SCROLL TO EXPLORE</div>
+</div>
+
+<hr class="rule">
+
+<!-- ABOUT -->
+<div class="section" id="about">
+  <div class="section-header reveal">
+    <span class="section-num">01 / ABOUT</span>
+    <h2>Who we are &amp; what we <span>build</span></h2>
+  </div>
+  <div class="about-grid">
+    <div class="prose reveal">
+      <p>We are a student-led team from the <strong>Department of Computer Science & Software Engineering (CSSE)</strong> in the Samuel Ginn College of Engineering at Auburn University.</p>
+      <p>Our passions lie at the intersection of Artificial Intelligence, Agentic AI, and Cybersecurity — fields we believe will reshape how knowledge is shared and communicated.</p>
+      <p>We are currently developing <strong>AUBRIA Keynote Talks</strong> for the Auburn University community — for AU Conferences, Workshops, Office/Department/College Meetings, etc. — and for external organizations. If you are interested in our team developing an AUBRIA Talk for your event, please contact us or our faculty advisor <strong>Dr. Gerry Dozier</strong>.</p>
+      <p>We are also available to develop a <strong>totally different AI personality</strong> for your department or organization — tailored to your voice, your mission, your audience.</p>
+    </div>
+
+    <div class="reveal">
+      <div class="affil-section-label">// Affiliations</div>
+      <div class="affil-stack">
+        <div class="affil-card">
+          <div class="affil-label">A project of</div>
+          <div class="affil-name">AI@AU — Auburn University Artificial Intelligence Initiative</div>
+          <a class="affil-link" href="https://eng.auburn.edu/ai-au/" target="_blank">eng.auburn.edu/ai-au →</a>
+        </div>
+        <div class="affil-card">
+          <div class="affil-label">Research Center</div>
+          <div class="affil-name">AU-CAICE — Auburn University Center for AI & Cybersecurity Engineering</div>
+          <a class="affil-link" href="https://eng.auburn.edu/au-caice/" target="_blank">eng.auburn.edu/au-caice →</a>
+        </div>
+        <div class="affil-card">
+          <div class="affil-label">Home Department</div>
+          <div class="affil-name">Computer Science & Software Engineering — Samuel Ginn College of Engineering</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="rule">
+
+<!-- STORY -->
+<div class="section" id="story">
+  <div class="section-header reveal">
+    <span class="section-num">02 / ORIGIN</span>
+    <h2>How <span>AUBRIA</span> came to life</h2>
+  </div>
+
+  <div class="story-grid">
+    <div class="timeline reveal">
+      <div class="timeline-item">
+        <div class="timeline-label">The Spark</div>
+        <p>AUBRIA is the brainchild of <strong>Auburn University PSFS Director Christine Cline</strong>. During the development of the 2026 AI@AU/Team Sciences: Building Research Communities in AI (Showcase &amp; Workshop), Christine mentioned the idea of having an AI-Generated Keynote Speaker to <strong>Dr. Jennifer Kerpelman</strong> (Associate Vice President for Research), who in turn mentioned the idea to <strong>Dr. Gerry Dozier</strong> (Faculty Advisor).</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-label">The Team</div>
+        <p>Dr. Dozier set out to find a team of students from the CSSE student body to develop an AI-Generated Keynote Speaker. Dr. Dozier found us — <em>a PhD student, a Master's student in Data Engineering, and a sophomore BS student.</em> Three perspectives. One shared mission.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-label">The Build</div>
+        <p>Under the auspices and guidance of <strong>Dr. Jennifer Kerpelman</strong>, <strong>Dr. Gerry Dozier</strong> (McCrary Professor of AI and Cybersecurity in CSSE), and <strong>Christine Cline</strong> (Director of PSFS), we developed the AUBRIA Keynote Talk that you now see on this website.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-label">What's Next</div>
+        <p>The AUBRIA Team is passionate about developing AI-Generated Keynote Talks for Conferences, Workshops, Meetings, and more. We are currently working on enabling Aubria to interact with the audience by taking and answering questions. If you are interested in our team developing an AI-Generated Keynote talk for you or your organization — <strong>contact us!</strong></p>
+      </div>
+    </div>
+
+    <div class="reveal">
+      <div class="story-card">
+        <div class="story-card-label">// Key Figures</div>
+        <div class="story-person">
+          <div class="person-name">Christine Cline</div>
+          <div class="person-role">PSFS Director · Auburn University</div>
+          <div class="person-note">Originator of the AUBRIA concept</div>
+        </div>
+        <div class="story-person">
+          <div class="person-name">Dr. Jennifer Kerpelman</div>
+          <div class="person-role">Associate Vice President for Research · Office of the Senior Vice President for Research and Economic Development</div>
+          <div class="person-note">Project champion &amp; faculty guidance</div>
+        </div>
+        <div class="story-person">
+          <div class="person-name">Dr. Gerry Dozier</div>
+          <div class="person-role">Faculty Advisor</div>
+          <div class="person-note">Team lead &amp; technical advisor</div>
+        </div>
+        <div class="story-person">
+          <div class="person-name">Dr. Hari Naryanan</div>
+          <div class="person-role">CSSE Department Chair</div>
+          <div class="person-note">Departmental oversight &amp; support</div>
+        </div>
+      </div>
+
+      <div class="story-card">
+        <div class="story-card-label">// The Student Team</div>
+        <div class="team-chips">
+          <div class="team-chip">
+            <span class="team-chip-icon">⬡</span>
+            <div>
+              <div class="team-chip-title">Jahidul Arafat</div>
+              <div class="team-chip-sub">PhD Student · Computer Science</div>
+            </div>
+          </div>
+          <div class="team-chip">
+            <span class="team-chip-icon">⬡</span>
+            <div>
+              <div class="team-chip-title">Bhuvaneshwari Bodakuntla</div>
+              <div class="team-chip-sub">Master's Student · Data Engineering</div>
+            </div>
+          </div>
+          <div class="team-chip">
+            <span class="team-chip-icon">⬡</span>
+            <div>
+              <div class="team-chip-title">Sawyer Womack</div>
+              <div class="team-chip-sub">Sophomore BS Student · Software Engineering</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- VIDEO SECTION -->
+<div class="video-section" id="keynote-demo">
+  <div class="video-inner">
+    <div class="video-header reveal">
+      <span class="section-num">03 / DEMO</span>
+      <h2>See <span>AUBRIA</span> in action</h2>
+    </div>
+    <p class="video-tagline reveal">Watch a live keynote talk — engineered by Auburn students, delivered by AI.</p>
+
+    <div class="video-frame-wrap reveal">
+      <!--
+        ╔══════════════════════════════════════════════════════════════╗
+        ║  SWAP YOUR YOUTUBE VIDEO ID BELOW                           ║
+        ║  Replace  YOUR_VIDEO_ID  with the ID from your YouTube URL  ║
+        ║  e.g. for https://youtu.be/dQw4w9WgXcQ → use dQw4w9WgXcQ   ║
+        ╚══════════════════════════════════════════════════════════════╝
+      -->
+      <iframe
+        src="https://www.youtube.com/embed/Eqb21_NHj7o?rel=0&modestbranding=1&color=white"
+        title="AUBRIA AI Keynote Speaker Demo"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen>
+      </iframe>
+    </div>
+
+    <div class="video-meta reveal">
+      <div class="video-meta-item">
+        <span class="video-meta-dot"></span>
+        Auburn University · CSSE
+      </div>
+      <div class="video-meta-item">
+        <span class="video-meta-dot" style="background: var(--blue-bright);"></span>
+        AI@AU Showcase &amp; Workshop · 2026
+      </div>
+      <div class="video-meta-item">
+        <span class="video-meta-dot" style="background: var(--gray-400);"></span>
+        AI-Generated Keynote Talk
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-band" id="contact">
+  <div class="cta-inner">
+    <span class="section-num">04 / DEPLOY</span>
+    <h2>Deploy <span>AUBRIA</span> at your next event.</h2>
+    <p>AI-generated keynotes engineered for conferences, workshops, meetings, and beyond.</p>
+    <div class="btn-group">
+      <a href="https://aub.ie/aubriaformlink" target="_blank" class="btn-cta-primary">Contact Our Team →</a>
+      <a href="https://eng.auburn.edu/ai-au/" target="_blank" class="btn-cta-outline">Learn About AI@AU</a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">[<span>AUBRIA</span>]</div>
+  <div class="footer-info">
+    Faculty Advisor: Dr. Gerry Dozier · Department of CSSE<br>
+    Samuel Ginn College of Engineering · Auburn University
+  </div>
+</footer>
+
+
+<script>
+  document.body.classList.add('js-ready');
+
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 80) nav.classList.add('scrolled');
+    else nav.classList.remove('scrolled');
+  });
+
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
