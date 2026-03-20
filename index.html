@@ -491,6 +491,84 @@
   .team-chip-title { font-size: 0.83rem; font-weight: 600; color: var(--text-dark); }
   .team-chip-sub { font-family: var(--mono); font-size: 0.6rem; color: var(--gray-400); letter-spacing: 0.04em; }
 
+  /* ── COMPOSITE ── */
+  .composite-section {
+    background: var(--gray-50);
+    border-top: 1px solid var(--gray-200);
+    border-bottom: 1px solid var(--gray-200);
+    padding: 5rem 3rem;
+  }
+  .composite-inner {
+    max-width: 1020px;
+    margin: 0 auto;
+  }
+  .composite-tagline {
+    font-size: 0.97rem;
+    color: var(--gray-600);
+    margin-bottom: 2.5rem;
+    line-height: 1.7;
+    max-width: 620px;
+  }
+  .composite-frame {
+    position: relative;
+    width: 100%;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow:
+      0 2px 4px rgba(10,22,40,0.06),
+      0 8px 24px rgba(10,22,40,0.1),
+      0 24px 64px rgba(10,22,40,0.12);
+    border: 1px solid var(--gray-200);
+  }
+  .composite-frame img {
+    width: 100%;
+    display: block;
+  }
+  .composite-frame::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 40px; height: 40px;
+    border-top: 2px solid var(--orange);
+    border-left: 2px solid var(--orange);
+    border-radius: 10px 0 0 0;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .composite-frame::after {
+    content: '';
+    position: absolute;
+    bottom: 0; right: 0;
+    width: 40px; height: 40px;
+    border-bottom: 2px solid var(--blue-bright);
+    border-right: 2px solid var(--blue-bright);
+    border-radius: 0 0 10px 0;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .composite-caption {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 1.25rem;
+    flex-wrap: wrap;
+  }
+  .composite-caption-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    color: var(--gray-400);
+    letter-spacing: 0.06em;
+  }
+  .composite-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--orange);
+    flex-shrink: 0;
+  }
+
   /* ── VIDEO SECTION ── */
   .video-section {
     background: var(--gray-50);
@@ -693,6 +771,7 @@
   <ul>
     <li><a href="#about" class="nav-link">About</a></li>
     <li><a href="#story" class="nav-link">Our Story</a></li>
+    <li><a href="#composite" class="nav-link">Composite</a></li>
     <li><a href="our-team.html" class="nav-link">Our Team</a></li>
     <li><a href="#contact" class="nav-link">Contact</a></li>
   </ul>
@@ -848,11 +927,41 @@
   </div>
 </div>
 
+<!-- COMPOSITE -->
+<div class="composite-section" id="composite">
+  <div class="composite-inner">
+    <div class="video-header reveal">
+      <span class="section-num">03 / COMPOSITE</span>
+      <h2><span>AUBRIA</span> &amp; the people behind her</h2>
+    </div>
+    <p class="composite-tagline reveal">AUBRIA is a composite — an AI avatar shaped by the expertise, vision, and collaboration of the Auburn University community. This image brings her together with the faculty, staff, and administrators who made her possible.</p>
+
+    <div class="composite-frame reveal">
+      <img src="aubria_composite.png" alt="AUBRIA composite — AI avatar surrounded by the Auburn University team members who built her">
+    </div>
+
+    <div class="composite-caption reveal">
+      <div class="composite-caption-item">
+        <span class="composite-dot"></span>
+        AUBRIA — AI Keynote Avatar
+      </div>
+      <div class="composite-caption-item">
+        <span class="composite-dot" style="background: var(--blue-bright);"></span>
+        Auburn University Faculty &amp; Staff
+      </div>
+      <div class="composite-caption-item">
+        <span class="composite-dot" style="background: var(--gray-400);"></span>
+        AI@AU · AU-CAICE · PSFS
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- VIDEO SECTION -->
 <div class="video-section" id="keynote-demo">
   <div class="video-inner">
     <div class="video-header reveal">
-      <span class="section-num">03 / DEMO</span>
+      <span class="section-num">04 / DEMO</span>
       <h2>See <span>AUBRIA</span> in action</h2>
     </div>
     <p class="video-tagline reveal">Watch a live keynote talk — engineered by Auburn students, delivered by AI.</p>
@@ -893,7 +1002,7 @@
 <!-- CTA -->
 <div class="cta-band" id="contact">
   <div class="cta-inner">
-    <span class="section-num">04 / DEPLOY</span>
+    <span class="section-num">05 / DEPLOY</span>
     <h2>Deploy <span>AUBRIA</span> at your next event.</h2>
     <p>AI-generated keynotes engineered for conferences, workshops, meetings, and beyond.</p>
     <div class="btn-group">
