@@ -60,7 +60,7 @@ export default function HomePage() {
       {/* HERO */}
       <div className="hero">
         <div className="hero-bg">
-          <img src="/Gemini_Generated_Image_i7aabji7aabji7aa.png" alt="AUBRIA AI Keynote Speaker" />
+          <img src="/aubria_banner.png" alt="AUBRIA AI Keynote Speaker" />
         </div>
         <div className="hero-grid"></div>
 
