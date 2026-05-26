@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createRequest, getAllRequests } from '@/lib/aws';
+import { createRequest, getAllRequests } from '@/lib/storage';
 import { v4 as uuidv4 } from 'uuid';
 
 export async function POST(request: NextRequest) {

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getDownloadUrl } from '@/lib/aws';
+import { getDownload } from '@/lib/storage';
 
 export async function GET(request: NextRequest) {
   const password = request.headers.get('x-admin-password');
@@ -11,8 +11,18 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: 'Missing key' }, { status: 400 });
   }
   try {
-    const url = await getDownloadUrl(key);
-    return NextResponse.json({ url });
+    const download = await getDownload(key);
+
+    if (download.kind === 'url') {
+      return NextResponse.json({ url: download.url });
+    }
+
+    return new NextResponse(download.body, {
+      headers: {
+        'Content-Type': download.contentType,
+        'Content-Disposition': `attachment; filename="${download.filename.replace(/"/g, '')}"`,
+      },
+    });
   } catch (error) {
     console.error('Error generating download URL:', error);
     return NextResponse.json({ error: 'Failed to generate download URL' }, { status: 500 });

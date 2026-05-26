@@ -1,6 +1,24 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { uploadToS3 } from '@/lib/aws';
-import { v4 as uuidv4 } from 'uuid';
+import { uploadFile } from '@/lib/storage';
+
+const MAX_FILE_SIZE = 10 * 1024 * 1024;
+const ALLOWED_EXTENSIONS = new Set([
+  'doc',
+  'docx',
+  'xls',
+  'xlsx',
+  'ppt',
+  'pptx',
+  'pdf',
+  'png',
+  'jpg',
+  'jpeg',
+  'gif',
+  'mp4',
+  'mov',
+  'mp3',
+  'wav',
+]);
 
 export async function POST(request: NextRequest) {
   try {
@@ -9,10 +27,16 @@ export async function POST(request: NextRequest) {
     if (!file) {
       return NextResponse.json({ error: 'No file provided' }, { status: 400 });
     }
-    const ext = file.name.split('.').pop();
-    const key = `uploads/${uuidv4()}.${ext}`;
+    const ext = file.name.split('.').pop()?.toLowerCase() || '';
+    if (!ALLOWED_EXTENSIONS.has(ext)) {
+      return NextResponse.json({ error: 'File type is not allowed' }, { status: 400 });
+    }
+    if (file.size > MAX_FILE_SIZE) {
+      return NextResponse.json({ error: 'File is larger than 10MB' }, { status: 400 });
+    }
+
     const buffer = Buffer.from(await file.arrayBuffer());
-    await uploadToS3(key, buffer, file.type);
+    const key = await uploadFile(file.name, buffer, file.type || 'application/octet-stream');
     return NextResponse.json({ key });
   } catch (error) {
     console.error('Error uploading file:', error);

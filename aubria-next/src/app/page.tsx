@@ -102,7 +102,7 @@ export default function HomePage() {
           </div>
 
           <div className="reveal">
-            <div className="affil-section-label">// Affiliations</div>
+            <div className="affil-section-label">{'// Affiliations'}</div>
             <div className="affil-stack">
               <div className="affil-card">
                 <div className="affil-label">A project of</div>
@@ -154,7 +154,7 @@ export default function HomePage() {
 
           <div className="reveal">
             <div className="story-card">
-              <div className="story-card-label">// Key Figures</div>
+              <div className="story-card-label">{'// Key Figures'}</div>
               <div className="story-person">
                 <div className="person-name">Christine Cline</div>
                 <div className="person-role">PSFS Director · Auburn University</div>
@@ -178,7 +178,7 @@ export default function HomePage() {
             </div>
 
             <div className="story-card">
-              <div className="story-card-label">// The Student Team</div>
+              <div className="story-card-label">{'// The Student Team'}</div>
               <div className="team-chips">
                 <div className="team-chip">
                   <span className="team-chip-icon">⬡</span>

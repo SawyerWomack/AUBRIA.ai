@@ -106,67 +106,13 @@ export default function RequestPage() {
   const [submitted, setSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState('');
   const [menuOpen, setMenuOpen] = useState(false);
-  const [fieldErrors, setFieldErrors] = useState<string[]>([]);
   const [uploadingBg, setUploadingBg] = useState(false);
   const [uploadingLogo, setUploadingLogo] = useState(false);
   const bgInputRef = useRef<HTMLInputElement>(null);
   const logoInputRef = useRef<HTMLInputElement>(null);
 
-  const requiredByStep: Record<number, { field: keyof FormData; label: string }[]> = {
-    0: [
-      { field: 'name', label: 'Name' },
-      { field: 'email', label: 'Email ID' },
-      { field: 'department', label: 'Department / Organization' },
-      { field: 'purpose', label: 'Purpose of the keynote request' },
-      { field: 'eventCoordinator', label: 'Event Coordinator' },
-    ],
-    1: [
-      { field: 'keynoteTopic', label: 'Keynote Topic / Theme' },
-      { field: 'primaryMessage', label: 'Primary Message of the Keynote' },
-      { field: 'keynoteObjectives', label: 'Keynote Objectives' },
-    ],
-    2: [
-      { field: 'presentationStyle', label: 'Preferred Presentation Style' },
-      { field: 'visualElements', label: 'Visual Elements Needed' },
-      { field: 'aspectRatio', label: 'Aspect Ratio Needed' },
-    ],
-    3: [],
-    4: [
-      { field: 'customMinutes', label: 'Requested Video Length (minutes)' },
-      { field: 'revisionRounds', label: 'Number of Revision Rounds' },
-      { field: 'permission', label: 'Permission to display on website' },
-      { field: 'fundsContactName', label: 'Name of contact for funds transfer' },
-      { field: 'fundsContactEmail', label: 'Email of contact' },
-    ],
-  };
-
-  const validateStep = (currentStep: number): boolean => {
-    const required = requiredByStep[currentStep] || [];
-    const missing: string[] = [];
-    for (const { field, label } of required) {
-      const val = form[field];
-      if (Array.isArray(val)) {
-        if (val.length === 0) missing.push(label);
-      } else if (!val || val.trim() === '') {
-        missing.push(label);
-      }
-    }
-    setFieldErrors(missing);
-    return missing.length === 0;
-  };
-
-  const handleNext = () => {
-    if (validateStep(step)) {
-      setStep(step + 1);
-      window.scrollTo(0, 0);
-    } else {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  };
-
   const updateField = (field: keyof FormData, value: string | string[]) => {
     setForm(prev => ({ ...prev, [field]: value }));
-    setFieldErrors(prev => prev.filter(e => e !== field));
   };
 
   const toggleArrayField = (field: keyof FormData, value: string) => {
@@ -260,6 +206,8 @@ export default function RequestPage() {
       ['Problem to Solve', form.problemToSolve],
       ['Additional Instructions', form.additionalInstructions],
       ['Permission to Display', form.permission],
+      ['Name of Contact Who Transfers the Funds', form.fundsContactName],
+      ['Email of Contact', form.fundsContactEmail],
       ['Estimated Price', `$${price.total.toLocaleString()}`],
     ];
 
@@ -380,46 +328,6 @@ export default function RequestPage() {
             />
           ))}
         </div>
-
-        {fieldErrors.length > 0 && (
-          <div style={{
-            background: 'var(--orange-pale)',
-            border: '1px solid rgba(232,90,10,0.3)',
-            borderRadius: '6px',
-            padding: '1rem 1.25rem',
-            marginBottom: '1.5rem',
-          }}>
-            <div style={{
-              fontFamily: 'var(--mono)',
-              fontSize: '0.65rem',
-              color: 'var(--orange)',
-              letterSpacing: '0.08em',
-              textTransform: 'uppercase' as const,
-              marginBottom: '0.5rem',
-              fontWeight: 600,
-            }}>Please fill in the following required fields:</div>
-            <ul style={{
-              listStyle: 'none',
-              padding: 0,
-              margin: 0,
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '0.25rem',
-            }}>
-              {fieldErrors.map(err => (
-                <li key={err} style={{
-                  fontSize: '0.85rem',
-                  color: 'var(--text-dark)',
-                  paddingLeft: '0.75rem',
-                  position: 'relative',
-                }}>
-                  <span style={{ position: 'absolute', left: 0, color: 'var(--orange)' }}>*</span>
-                  {err}
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
 
         {/* SECTION 1 */}
         {step === 0 && (
@@ -669,7 +577,7 @@ export default function RequestPage() {
             {/* Price Card */}
             {form.customMinutes && form.revisionRounds && (
               <div className="price-card">
-                <div className="price-label">// Estimated Price</div>
+                <div className="price-label">{'// Estimated Price'}</div>
                 <div className="price-amount">${price.total.toLocaleString()}</div>
                 <div className="price-breakdown">
                   <div className="price-line">
@@ -743,12 +651,12 @@ export default function RequestPage() {
               </div>
             </div>
             <div className="form-group">
-              <label className="form-label"><span className="form-label-num">35.</span>Name of contact for arranging transfer of funds to AI@AU Laboratory<span className="form-required">*</span></label>
-              <input className="form-input" type="text" value={form.fundsContactName} onChange={e => updateField('fundsContactName', e.target.value)} placeholder="Enter your answer" />
+              <label className="form-label"><span className="form-label-num">35.</span>Name of contact who transfers the funds</label>
+              <input className="form-input" type="text" value={form.fundsContactName} onChange={e => updateField('fundsContactName', e.target.value)} placeholder="Enter contact name" />
             </div>
             <div className="form-group">
-              <label className="form-label"><span className="form-label-num">36.</span>Email of contact<span className="form-required">*</span></label>
-              <input className="form-input" type="email" value={form.fundsContactEmail} onChange={e => updateField('fundsContactEmail', e.target.value)} placeholder="Enter your answer" />
+              <label className="form-label"><span className="form-label-num">36.</span>Email of contact</label>
+              <input className="form-input" type="email" value={form.fundsContactEmail} onChange={e => updateField('fundsContactEmail', e.target.value)} placeholder="Enter contact email" />
             </div>
 
           </div>
@@ -757,18 +665,18 @@ export default function RequestPage() {
         {/* Navigation */}
         <div className="form-nav">
           {step > 0 ? (
-            <button className="form-btn form-btn-back" onClick={() => { setFieldErrors([]); setStep(step - 1); window.scrollTo(0, 0); }}>
+            <button className="form-btn form-btn-back" onClick={() => { setStep(step - 1); window.scrollTo(0, 0); }}>
               ← Back
             </button>
           ) : <div />}
           {step < 4 ? (
-            <button className="form-btn form-btn-next" onClick={handleNext}>
+            <button className="form-btn form-btn-next" onClick={() => { setStep(step + 1); window.scrollTo(0, 0); }}>
               Next →
             </button>
           ) : (
             <div>
               {submitError && <p style={{ color: 'var(--orange)', fontSize: '0.85rem', marginBottom: '0.5rem', textAlign: 'right' }}>{submitError}</p>}
-              <button className="form-btn form-btn-next" onClick={() => { if (validateStep(step)) handleSubmit(); }} disabled={submitting}>
+              <button className="form-btn form-btn-next" onClick={handleSubmit} disabled={submitting}>
                 {submitting ? 'Submitting...' : 'Submit Request →'}
               </button>
             </div>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 
 interface RequestItem {
@@ -119,8 +119,22 @@ export default function AdminPage() {
         headers: { 'x-admin-password': storedPassword },
       });
       if (res.ok) {
-        const { url } = await res.json();
-        window.open(url, '_blank');
+        const contentType = res.headers.get('content-type') || '';
+        if (contentType.includes('application/json')) {
+          const { url } = await res.json();
+          window.open(url, '_blank');
+          return;
+        }
+
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = key.split('/').pop() || 'download';
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        URL.revokeObjectURL(url);
       }
     } catch (err) {
       console.error('Download failed:', err);
@@ -154,6 +168,8 @@ export default function AdminPage() {
       ['Music Style', r.musicStyle as string],
       ['Deliverables', Array.isArray(r.deliverables) ? (r.deliverables as string[]).join(', ') : r.deliverables as string],
       ['Additional Instructions', r.additionalInstructions as string],
+      ['Name of Contact Who Transfers the Funds', r.fundsContactName as string],
+      ['Email of Contact', r.fundsContactEmail as string],
     ];
 
     const html = `
@@ -287,6 +303,8 @@ export default function AdminPage() {
       ['Deliverables', Array.isArray(r.deliverables) ? (r.deliverables as string[]).join(', ') : r.deliverables],
       ['Problem to Solve', r.problemToSolve],
       ['Additional Instructions', r.additionalInstructions],
+      ['Name of Contact Who Transfers the Funds', r.fundsContactName],
+      ['Email of Contact', r.fundsContactEmail],
       ['Estimated Price', r.estimatedPrice ? `$${Number(r.estimatedPrice).toLocaleString()}` : 'N/A'],
     ];
 
@@ -362,7 +380,7 @@ export default function AdminPage() {
           {/* Uploaded Files */}
           {(Array.isArray(r.backgroundStyleKeys) && r.backgroundStyleKeys.length > 0 && (r.backgroundStyleKeys as string[])[0] !== '-') && (
             <div style={{ marginTop: '2rem' }}>
-              <div style={{ fontFamily: 'var(--mono)', fontSize: '0.7rem', color: 'var(--orange)', letterSpacing: '0.1em', textTransform: 'uppercase' as const, marginBottom: '0.75rem' }}>// Background Style Files</div>
+              <div style={{ fontFamily: 'var(--mono)', fontSize: '0.7rem', color: 'var(--orange)', letterSpacing: '0.1em', textTransform: 'uppercase' as const, marginBottom: '0.75rem' }}>{'// Background Style Files'}</div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                 {(r.backgroundStyleKeys as string[]).map((key: string, i: number) => (
                   <button
@@ -385,7 +403,7 @@ export default function AdminPage() {
 
           {(Array.isArray(r.logoKeys) && r.logoKeys.length > 0 && (r.logoKeys as string[])[0] !== '-') && (
             <div style={{ marginTop: '1.5rem' }}>
-              <div style={{ fontFamily: 'var(--mono)', fontSize: '0.7rem', color: 'var(--orange)', letterSpacing: '0.1em', textTransform: 'uppercase' as const, marginBottom: '0.75rem' }}>// Logo / Branding Files</div>
+              <div style={{ fontFamily: 'var(--mono)', fontSize: '0.7rem', color: 'var(--orange)', letterSpacing: '0.1em', textTransform: 'uppercase' as const, marginBottom: '0.75rem' }}>{'// Logo / Branding Files'}</div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                 {(r.logoKeys as string[]).map((key: string, i: number) => (
                   <button

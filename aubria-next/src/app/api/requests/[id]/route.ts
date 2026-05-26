@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getRequest, updateRequestStatus } from '@/lib/aws';
+import { getRequest, updateRequestStatus } from '@/lib/storage';
 
 export async function GET(
   request: NextRequest,
