@@ -148,8 +148,16 @@ export default function RequestPage() {
   };
 
   const handleSubmit = async () => {
-    setSubmitting(true);
     setSubmitError('');
+
+    if (!form.fundsContactName.trim() || !form.fundsContactEmail.trim()) {
+      setStep(4);
+      setSubmitError('Please provide the funds contact name and email.');
+      window.scrollTo(0, 0);
+      return;
+    }
+
+    setSubmitting(true);
     try {
       const price = calculatePrice(form.customMinutes, form.revisionRounds);
       const res = await fetch('/api/requests', {
@@ -651,12 +659,12 @@ export default function RequestPage() {
               </div>
             </div>
             <div className="form-group">
-              <label className="form-label"><span className="form-label-num">35.</span>Name of contact who transfers the funds</label>
-              <input className="form-input" type="text" value={form.fundsContactName} onChange={e => updateField('fundsContactName', e.target.value)} placeholder="Enter contact name" />
+              <label className="form-label"><span className="form-label-num">35.</span>Name of contact who transfers the funds<span className="form-required">*</span></label>
+              <input className="form-input" type="text" value={form.fundsContactName} onChange={e => updateField('fundsContactName', e.target.value)} placeholder="Enter contact name" required />
             </div>
             <div className="form-group">
-              <label className="form-label"><span className="form-label-num">36.</span>Email of contact</label>
-              <input className="form-input" type="email" value={form.fundsContactEmail} onChange={e => updateField('fundsContactEmail', e.target.value)} placeholder="Enter contact email" />
+              <label className="form-label"><span className="form-label-num">36.</span>Email of contact<span className="form-required">*</span></label>
+              <input className="form-input" type="email" value={form.fundsContactEmail} onChange={e => updateField('fundsContactEmail', e.target.value)} placeholder="Enter contact email" required />
             </div>
 
           </div>
