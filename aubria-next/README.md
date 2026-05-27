@@ -8,10 +8,10 @@ A Next.js web application for the AUBRIA AI-generated keynote speaker system, bu
 
 - **Public website** showcasing AUBRIA (Home, Our Team pages)
 - **Keynote request form** with live pricing calculator
-- **File uploads** to AWS S3 (branding materials, background styles)
+- **File uploads** to rharmony server storage (branding materials, background styles)
 - **Admin dashboard** (password-protected) to view/manage requests
 - **PDF export** for submitted requests
-- **Data storage** in AWS DynamoDB
+- **Data storage** in PostgreSQL
 
 ---
 
@@ -59,34 +59,30 @@ This will download all required packages. It may take 1-2 minutes.
 
 ## Step 3: Configure Environment Variables
 
-AWS (IAM credentials, DynamoDB table, S3 bucket) is already set up. **Contact Bhuvana for the credentials.**
+PostgreSQL and uploaded files are hosted on `rharmony5`.
 
 Inside the `aubria-next` folder, open the file called `.env.local` in any text editor.
 
-Replace the placeholder values with the credentials Bhuvana provides:
+Set these values:
 
 ```
-# AWS Configuration
-AWS_ACCESS_KEY_ID=ask-bhuvana
-AWS_SECRET_ACCESS_KEY=ask-bhuvana
-AWS_REGION=ask-bhuvana
-
-# S3 Bucket for file uploads
-S3_BUCKET_NAME=ask-bhuvana
-
 # Admin password for viewing requests
-ADMIN_PASSWORD=ask-bhuvana
+ADMIN_PASSWORD=your-admin-password
+
+# PostgreSQL database
+DATABASE_URL=postgresql://aubria_user:your-postgres-password@localhost:5432/aubria
+
+# File upload storage
+UPLOAD_DIR=/home/bzb0159/aubria-uploads
 ```
 
 **What to fill in:**
 
 | Variable | What it is |
 |----------|-----------|
-| `AWS_ACCESS_KEY_ID` | AWS access key (get from Bhuvana) |
-| `AWS_SECRET_ACCESS_KEY` | AWS secret key (get from Bhuvana) |
-| `AWS_REGION` | AWS region where services are set up (get from Bhuvana) |
-| `S3_BUCKET_NAME` | S3 bucket name for file uploads (get from Bhuvana) |
-| `ADMIN_PASSWORD` | Password for the admin dashboard (get from Bhuvana) |
+| `ADMIN_PASSWORD` | Password for the admin dashboard |
+| `DATABASE_URL` | PostgreSQL connection string |
+| `UPLOAD_DIR` | Server folder where uploaded files are stored |
 
 > **Warning:** Never share this file publicly or commit it to GitHub. It contains sensitive credentials.
 
@@ -168,11 +164,9 @@ It will give you a live URL like `https://aubria-xxxx.vercel.app`.
 
 | Key | Value |
 |-----|-------|
-| `AWS_ACCESS_KEY_ID` | your access key |
-| `AWS_SECRET_ACCESS_KEY` | your secret key |
-| `AWS_REGION` | your region (e.g., `us-east-1`) |
-| `S3_BUCKET_NAME` | your bucket name |
 | `ADMIN_PASSWORD` | your admin password |
+| `DATABASE_URL` | your PostgreSQL connection string |
+| `UPLOAD_DIR` | your upload storage folder |
 
 **Step 5: Redeploy**
 
@@ -186,31 +180,21 @@ Your site is now live at the URL Vercel gave you.
 
 ---
 
-### Option B: Deploy to AWS EC2 (Self-Hosted)
+### Option B: Deploy to a Linux Server
 
 Use this if you want full control over the server.
 
-**Step 1: Launch an EC2 instance**
+**Step 1: Prepare a server**
 
-1. Go to AWS Console > EC2 > **Launch Instance**
-2. Choose **Ubuntu 24.04 LTS** as the operating system
-3. Instance type: `t2.micro` (free tier eligible) or `t3.small` for production
-4. Create a new key pair (download the `.pem` file - you'll need it to connect)
-5. In **Network settings**, allow these ports:
-   - SSH (port 22) - from your IP
-   - HTTP (port 80) - from anywhere
-   - HTTPS (port 443) - from anywhere
-6. Click **Launch instance**
+Use an Ubuntu server with Node.js and PostgreSQL access. The current production server is `rharmony5`.
 
 **Step 2: Connect to your server**
 
 Open a terminal on your computer and run:
 
 ```bash
-ssh -i your-key.pem ubuntu@your-server-ip
+ssh your-user@your-server
 ```
-
-> Replace `your-key.pem` with the path to your downloaded key file, and `your-server-ip` with your EC2 instance's public IP address.
 
 **Step 3: Install Node.js on the server**
 
@@ -252,14 +236,20 @@ nano .env.local
 Paste your environment variables (same as Step 3 in the local setup):
 
 ```
-AWS_ACCESS_KEY_ID=your-key
-AWS_SECRET_ACCESS_KEY=your-secret
-AWS_REGION=us-east-1
-S3_BUCKET_NAME=your-bucket
 ADMIN_PASSWORD=your-password
+DATABASE_URL=postgresql://aubria_user:your-postgres-password@localhost:5432/aubria
+UPLOAD_DIR=/home/bzb0159/aubria-uploads
 ```
 
 Save the file: press `Ctrl + X`, then `Y`, then `Enter`.
+
+Create the upload folder:
+
+```bash
+mkdir -p /home/bzb0159/aubria-uploads/uploads
+chmod 700 /home/bzb0159/aubria-uploads /home/bzb0159/aubria-uploads/uploads
+chmod 600 .env.local
+```
 
 **Step 7: Build the project**
 
@@ -406,7 +396,9 @@ aubria-next/
 │   └── our-story/                     # Team member photos
 ├── src/
 │   ├── lib/
-│   │   └── aws.ts                # AWS DynamoDB + S3 helper functions
+│   │   ├── local-files.ts        # rharmony file upload/download helpers
+│   │   ├── postgres.ts           # PostgreSQL request storage helpers
+│   │   └── storage.ts            # app storage API
 │   └── app/
 │       ├── globals.css           # All styling
 │       ├── layout.tsx            # Root HTML layout
@@ -423,9 +415,9 @@ aubria-next/
 │           │   └── [id]/
 │           │       └── route.ts  # GET: single request, PATCH: update status
 │           ├── upload/
-│           │   └── route.ts      # POST: upload file to S3
+│           │   └── route.ts      # POST: upload file to server storage
 │           ├── download/
-│           │   └── route.ts      # GET: download file from S3
+│           │   └── route.ts      # GET: download file from server storage
 │           └── admin/
 │               └── login/
 │                   └── route.ts  # POST: validate admin password
@@ -439,8 +431,8 @@ aubria-next/
 |---------|----------|
 | `npm install` fails | Make sure Node.js 18+ is installed: `node --version` |
 | `npm run dev` fails | Make sure you ran `npm install` first |
-| Form submit says "resource not found" | Your `AWS_REGION` in `.env.local` doesn't match where the DynamoDB table was created. Ask Bhuvana for the correct region. |
-| Files won't upload | Ask Bhuvana to verify the S3 bucket CORS configuration |
+| Form submit fails | Check that `DATABASE_URL` is set and PostgreSQL is reachable |
+| Files won't upload | Check that `UPLOAD_DIR` exists and the app user can write to it |
 | Admin login doesn't work | Check that `ADMIN_PASSWORD` is set in `.env.local` and restart the dev server |
 | Port 3000 in use | Next.js will auto-switch to 3001. Check terminal output for the URL |
 | Styles look wrong on mobile | Hard-refresh your browser with `Ctrl + Shift + R` (or `Cmd + Shift + R` on Mac) |

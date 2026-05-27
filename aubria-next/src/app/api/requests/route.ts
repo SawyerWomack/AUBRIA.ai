@@ -7,7 +7,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const requestId = uuidv4();
 
-    // DynamoDB doesn't allow empty strings — convert them to null-safe values
+    // Keep empty values consistent in saved request summaries.
     const cleaned: Record<string, unknown> = {};
     for (const [key, value] of Object.entries(body)) {
       if (value === '') {

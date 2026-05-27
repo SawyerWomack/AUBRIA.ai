@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
     }
 
     const buffer = Buffer.from(await file.arrayBuffer());
-    const key = await uploadFile(file.name, buffer, file.type || 'application/octet-stream');
+    const key = await uploadFile(file.name, buffer);
     return NextResponse.json({ key });
   } catch (error) {
     console.error('Error uploading file:', error);

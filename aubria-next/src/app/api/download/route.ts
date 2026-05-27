@@ -13,10 +13,6 @@ export async function GET(request: NextRequest) {
   try {
     const download = await getDownload(key);
 
-    if (download.kind === 'url') {
-      return NextResponse.json({ url: download.url });
-    }
-
     return new NextResponse(download.body, {
       headers: {
         'Content-Type': download.contentType,

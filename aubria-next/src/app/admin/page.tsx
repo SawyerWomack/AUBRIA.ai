@@ -119,13 +119,6 @@ export default function AdminPage() {
         headers: { 'x-admin-password': storedPassword },
       });
       if (res.ok) {
-        const contentType = res.headers.get('content-type') || '';
-        if (contentType.includes('application/json')) {
-          const { url } = await res.json();
-          window.open(url, '_blank');
-          return;
-        }
-
         const blob = await res.blob();
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
