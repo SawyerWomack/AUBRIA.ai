@@ -82,7 +82,9 @@ export default function HomePage() {
           </div>
         </div>
 
-        <div className="scroll-hint">SCROLL TO EXPLORE</div>
+        <div className="hero-corner-logo" aria-label="AI@AU Lab">
+          <img src="/our-story/ai-au-lab-logo.png" alt="AI@AU Lab" />
+        </div>
       </div>
 
       <hr className="rule" />
