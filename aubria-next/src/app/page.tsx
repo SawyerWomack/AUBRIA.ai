@@ -142,7 +142,7 @@ export default function HomePage() {
             </div>
             <div className="timeline-item">
               <div className="timeline-label">The Team</div>
-              <p>Dr. Dozier set out to find a team of students from the CSSE student body to develop an AI-Generated Keynote Speaker. Dr. Dozier found us — <em>a PhD student, a Master&apos;s student in Data Engineering, and a sophomore BS student.</em> Three perspectives. One shared mission.</p>
+              <p>Dr. Dozier set out to find a team of students from the CSSE student body to develop an AI-Generated Keynote Speaker. Dr. Dozier found us — <em>two PhD students and a sophomore BS student.</em> Three perspectives. One shared mission.</p>
             </div>
             <div className="timeline-item">
               <div className="timeline-label">The Build</div>
@@ -193,7 +193,7 @@ export default function HomePage() {
                   <span className="team-chip-icon">⬡</span>
                   <div>
                     <div className="team-chip-title">Bhuvaneshwari Bodakuntla</div>
-                    <div className="team-chip-sub">Master&apos;s Student · Data Engineering</div>
+                    <div className="team-chip-sub">PhD Student · Computer Science</div>
                   </div>
                 </div>
                 <div className="team-chip">

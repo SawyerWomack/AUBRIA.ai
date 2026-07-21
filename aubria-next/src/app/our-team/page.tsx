@@ -172,7 +172,7 @@ export default function OurTeamPage() {
                   </div>
                   <div className="student-chip-text">
                     <div className="student-chip-name">Bhuvaneshwari Bodakuntla</div>
-                    <div className="student-chip-role">MS Data Engineering Student</div>
+                    <div className="student-chip-role">PhD Computer Science Student</div>
                   </div>
                 </div>
 
