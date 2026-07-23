@@ -53,6 +53,7 @@ export default function HomePage() {
           <li><a href="#story" className="nav-link" onClick={() => setMenuOpen(false)}>Our Story</a></li>
           <li><a href="#composite" className="nav-link" onClick={() => setMenuOpen(false)}>Composite</a></li>
           <li><Link href="/our-team" className="nav-link" onClick={() => setMenuOpen(false)}>Our Team</Link></li>
+          <li><Link href="/gallery" className="nav-link" onClick={() => setMenuOpen(false)}>Our Gallery</Link></li>
           <li><a href="#contact" className="nav-link" onClick={() => setMenuOpen(false)}>Contact</a></li>
         </ul>
       </nav>

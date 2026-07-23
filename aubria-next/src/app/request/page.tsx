@@ -273,6 +273,7 @@ export default function RequestPage() {
           <ul className={`nav-ul ${menuOpen ? 'open' : ''}`}>
             <li><Link href="/" className="nav-link" onClick={() => setMenuOpen(false)}>Home</Link></li>
             <li><Link href="/our-team" className="nav-link" onClick={() => setMenuOpen(false)}>Our Team</Link></li>
+            <li><Link href="/gallery" className="nav-link" onClick={() => setMenuOpen(false)}>Our Gallery</Link></li>
           </ul>
         </nav>
         <div className="page-header">
@@ -315,6 +316,7 @@ export default function RequestPage() {
         <ul className="nav-ul">
           <li><Link href="/" className="nav-link">Home</Link></li>
           <li><Link href="/our-team" className="nav-link">Our Team</Link></li>
+          <li><Link href="/gallery" className="nav-link">Our Gallery</Link></li>
         </ul>
       </nav>
 

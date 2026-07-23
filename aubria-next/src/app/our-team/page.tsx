@@ -36,6 +36,8 @@ export default function OurTeamPage() {
         <ul className={`nav-ul ${menuOpen ? 'open' : ''}`}>
           <li><Link href="/" className="nav-link" onClick={() => setMenuOpen(false)}>Home</Link></li>
           <li><a href="#story" className="nav-link" onClick={() => setMenuOpen(false)}>Our Team</a></li>
+          <li><Link href="/gallery" className="nav-link" onClick={() => setMenuOpen(false)}>Our Gallery</Link></li>
+          <li><Link href="/request" className="nav-link" onClick={() => setMenuOpen(false)}>Request</Link></li>
           <li><a href="#contact" className="nav-link" onClick={() => setMenuOpen(false)}>Contact</a></li>
         </ul>
       </nav>
