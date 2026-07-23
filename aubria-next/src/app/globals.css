@@ -651,9 +651,24 @@ h2.section-title span { color: var(--blue-bright); }
 }
 
 /* ── GALLERY PAGE ── */
+.gallery-event-section {
+  background: var(--gray-50);
+  border-top: 1px solid var(--gray-200);
+}
+.gallery-event-header {
+  max-width: 1020px;
+  margin: 0 auto 1rem;
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.gallery-event-header.visible {
+  opacity: 1;
+  transform: none;
+}
 .gallery-video-card {
   max-width: 1020px;
-  margin: 0 auto;
+  margin: 2rem auto 0;
   opacity: 0;
   transform: translateY(24px);
   transition: opacity 0.7s ease, transform 0.7s ease;
@@ -692,33 +707,99 @@ h2.section-title span { color: var(--blue-bright); }
   color: rgba(255,255,255,0.72);
   font-size: 0.95rem;
 }
-.gallery-section-alt {
-  background: var(--gray-50);
-  border-top: 1px solid var(--gray-200);
+.gallery-video-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--gray-200);
+  box-shadow:
+    0 2px 4px rgba(10,22,40,0.06),
+    0 8px 24px rgba(10,22,40,0.1),
+    0 24px 64px rgba(10,22,40,0.12);
+}
+.gallery-video-frame iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
 }
 .gallery-intro {
-  max-width: 680px;
+  max-width: 1020px;
+  margin-left: auto;
+  margin-right: auto;
   color: var(--gray-600);
   line-height: 1.7;
-  margin-bottom: 2rem;
 }
-.gallery-grid {
+.gallery-carousel {
+  max-width: 1020px;
+  margin: 2rem auto 0;
+  position: relative;
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: 48px minmax(0, 1fr) 48px;
+  align-items: center;
   gap: 1rem;
-}
-.gallery-card {
   opacity: 0;
   transform: translateY(24px);
   transition: opacity 0.7s ease, transform 0.7s ease;
 }
-.gallery-card.visible {
+.gallery-carousel.visible {
   opacity: 1;
   transform: none;
 }
+.gallery-slide {
+  min-width: 0;
+}
+.gallery-arrow {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid var(--gray-200);
+  background: white;
+  color: var(--blue);
+  font-size: 2rem;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(10,22,40,0.08);
+  transition: all 0.2s ease;
+}
+.gallery-arrow:hover {
+  color: white;
+  background: var(--orange);
+  border-color: var(--orange);
+  transform: translateY(-1px);
+}
+.gallery-dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.55rem;
+  margin-top: 1.25rem;
+}
+.gallery-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: 1px solid var(--gray-300);
+  background: white;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.2s ease;
+}
+.gallery-dot.active {
+  width: 24px;
+  border-radius: 999px;
+  border-color: var(--orange);
+  background: var(--orange);
+}
 .gallery-photo-placeholder {
-  aspect-ratio: 4 / 3;
-  border-radius: 8px;
+  aspect-ratio: 16 / 9;
+  border-radius: 10px;
   border: 1px dashed var(--gray-300);
   background: white;
   color: var(--gray-400);
@@ -1537,7 +1618,14 @@ footer {
   .video-section { padding: 3rem 1.25rem; }
   .video-tagline { font-size: 0.88rem; }
   .video-meta { gap: 0.75rem; flex-direction: column; }
-  .gallery-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .gallery-carousel {
+    grid-template-columns: 42px minmax(0, 1fr) 42px;
+    gap: 0.75rem;
+  }
+  .gallery-arrow {
+    width: 42px;
+    height: 42px;
+  }
 
   .cta-band { padding: 3rem 1.25rem; }
   .btn-group { flex-direction: column; align-items: center; }
@@ -1591,7 +1679,16 @@ footer {
 
   .page-header h1 { font-size: 1.6rem; }
   .page-header-sub { font-size: 0.82rem; }
-  .gallery-grid { grid-template-columns: 1fr; }
+  .gallery-carousel {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+  .gallery-arrow-left,
+  .gallery-arrow-right {
+    grid-row: 2;
+  }
+  .gallery-arrow-left { justify-self: end; }
+  .gallery-arrow-right { justify-self: start; }
 
   .cta-band h2 { font-size: 1.3rem; }
   .form-step-heading { font-size: 1.1rem; }

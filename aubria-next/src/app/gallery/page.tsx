@@ -5,9 +5,39 @@ import Link from 'next/link';
 
 export default function GalleryPage() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [activeAiExchangePhoto, setActiveAiExchangePhoto] = useState(0);
+  const [activeDcsitePhoto, setActiveDcsitePhoto] = useState(0);
+  const [activeEthicsPhoto, setActiveEthicsPhoto] = useState(0);
+  const aiExchangePhotos = ['Photo 1', 'Photo 2', 'Photo 3', 'Photo 4'];
+  const dcsitePhotos = ['Photo 1', 'Photo 2', 'Photo 3', 'Photo 4'];
+  const ethicsPhotos = ['Photo 1', 'Photo 2', 'Photo 3', 'Photo 4'];
+
+  const showPreviousAiExchangePhoto = () => {
+    setActiveAiExchangePhoto((current) => (current === 0 ? aiExchangePhotos.length - 1 : current - 1));
+  };
+
+  const showNextAiExchangePhoto = () => {
+    setActiveAiExchangePhoto((current) => (current === aiExchangePhotos.length - 1 ? 0 : current + 1));
+  };
+
+  const showPreviousDcsitePhoto = () => {
+    setActiveDcsitePhoto((current) => (current === 0 ? dcsitePhotos.length - 1 : current - 1));
+  };
+
+  const showNextDcsitePhoto = () => {
+    setActiveDcsitePhoto((current) => (current === dcsitePhotos.length - 1 ? 0 : current + 1));
+  };
+
+  const showPreviousEthicsPhoto = () => {
+    setActiveEthicsPhoto((current) => (current === 0 ? ethicsPhotos.length - 1 : current - 1));
+  };
+
+  const showNextEthicsPhoto = () => {
+    setActiveEthicsPhoto((current) => (current === ethicsPhotos.length - 1 ? 0 : current + 1));
+  };
 
   useEffect(() => {
-    const reveals = document.querySelectorAll('.reveal, .gallery-card');
+    const reveals = document.querySelectorAll('.reveal, .gallery-carousel');
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry, i) => {
         if (entry.isIntersecting) {
@@ -51,37 +81,137 @@ export default function GalleryPage() {
 
       <hr className="rule" />
 
-      <div className="section">
-        <div className="section-header reveal">
-          <span className="section-num">01 / VIDEO</span>
-          <h2 className="section-title">AUBRIA keynote <span>video</span></h2>
-        </div>
-
-        <div className="gallery-video-card reveal">
-          <div className="gallery-video-placeholder">
-            <div>
-              <div className="gallery-placeholder-label">YouTube Video</div>
-              <p>Add the AUBRIA YouTube link here when it is ready.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="section gallery-section-alt">
-        <div className="section-header reveal">
-          <span className="section-num">02 / EVENT</span>
-          <h2 className="section-title">Alabama AI <span>Exchange</span></h2>
+      <div className="section gallery-event-section">
+        <div className="gallery-event-header reveal">
+          <span className="section-num">EVENT</span>
+          <h2 className="section-title">Alabama AI <span>Exchange 2026</span></h2>
         </div>
 
         <p className="gallery-intro reveal">
-          AUBRIA at the Alabama AI Exchange event, connecting with researchers, students, and AI leaders across Alabama.
+          AUBRIA at Alabama AI Exchange 2026, sharing project highlights and connecting with the broader AI community.
         </p>
 
-        <div className="gallery-grid">
-          {['Photo 1', 'Photo 2', 'Photo 3', 'Photo 4'].map((label) => (
-            <div className="gallery-card" key={label}>
-              <div className="gallery-photo-placeholder">{label}</div>
-            </div>
+        <div className="gallery-video-card reveal">
+          <div className="gallery-video-frame">
+            <iframe
+              src="https://www.youtube.com/embed/sMQZp5-MhAk"
+              title="AUBRIA Alabama AI Exchange 2026 video"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+            />
+          </div>
+        </div>
+
+        <div className="gallery-carousel reveal">
+          <button className="gallery-arrow gallery-arrow-left" onClick={showPreviousAiExchangePhoto} aria-label="Previous Alabama AI Exchange photo">
+            ‹
+          </button>
+          <div className="gallery-slide">
+            <div className="gallery-photo-placeholder">{aiExchangePhotos[activeAiExchangePhoto]}</div>
+          </div>
+          <button className="gallery-arrow gallery-arrow-right" onClick={showNextAiExchangePhoto} aria-label="Next Alabama AI Exchange photo">
+            ›
+          </button>
+        </div>
+
+        <div className="gallery-dots" aria-label="Alabama AI Exchange photo navigation">
+          {aiExchangePhotos.map((label, index) => (
+            <button
+              key={label}
+              className={`gallery-dot ${activeAiExchangePhoto === index ? 'active' : ''}`}
+              onClick={() => setActiveAiExchangePhoto(index)}
+              aria-label={`Show Alabama AI Exchange ${label}`}
+            />
+          ))}
+        </div>
+      </div>
+
+      <div className="section gallery-event-section">
+        <div className="gallery-event-header reveal">
+          <span className="section-num">EVENT</span>
+          <h2 className="section-title">AUCVM External Advisory Council <span>(DCSITE)</span></h2>
+        </div>
+
+        <p className="gallery-intro reveal">
+          AUBRIA presentation and media from the AUCVM External Advisory Council event for DCSITE.
+        </p>
+
+        <div className="gallery-video-card reveal">
+          <div className="gallery-video-frame">
+            <iframe
+              src="https://www.youtube.com/embed/sGyA4JV6494"
+              title="AUBRIA AUCVM External Advisory Council DCSITE video"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+            />
+          </div>
+        </div>
+
+        <div className="gallery-carousel reveal">
+          <button className="gallery-arrow gallery-arrow-left" onClick={showPreviousDcsitePhoto} aria-label="Previous DCSITE photo">
+            ‹
+          </button>
+          <div className="gallery-slide">
+            <div className="gallery-photo-placeholder">{dcsitePhotos[activeDcsitePhoto]}</div>
+          </div>
+          <button className="gallery-arrow gallery-arrow-right" onClick={showNextDcsitePhoto} aria-label="Next DCSITE photo">
+            ›
+          </button>
+        </div>
+
+        <div className="gallery-dots" aria-label="DCSITE photo navigation">
+          {dcsitePhotos.map((label, index) => (
+            <button
+              key={label}
+              className={`gallery-dot ${activeDcsitePhoto === index ? 'active' : ''}`}
+              onClick={() => setActiveDcsitePhoto(index)}
+              aria-label={`Show DCSITE ${label}`}
+            />
+          ))}
+        </div>
+      </div>
+
+      <div className="section gallery-event-section">
+        <div className="gallery-event-header reveal">
+          <span className="section-num">EVENT</span>
+          <h2 className="section-title">AI Ethics <span>Iron Bowl</span></h2>
+        </div>
+
+        <p className="gallery-intro reveal">
+          AUBRIA media from the AI Ethics Iron Bowl event.
+        </p>
+
+        <div className="gallery-video-card reveal">
+          <div className="gallery-video-frame">
+            <iframe
+              src="https://www.youtube.com/embed/vF6NjhEK42k"
+              title="AUBRIA AI Ethics Iron Bowl video"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+            />
+          </div>
+        </div>
+
+        <div className="gallery-carousel reveal">
+          <button className="gallery-arrow gallery-arrow-left" onClick={showPreviousEthicsPhoto} aria-label="Previous AI Ethics Iron Bowl photo">
+            ‹
+          </button>
+          <div className="gallery-slide">
+            <div className="gallery-photo-placeholder">{ethicsPhotos[activeEthicsPhoto]}</div>
+          </div>
+          <button className="gallery-arrow gallery-arrow-right" onClick={showNextEthicsPhoto} aria-label="Next AI Ethics Iron Bowl photo">
+            ›
+          </button>
+        </div>
+
+        <div className="gallery-dots" aria-label="AI Ethics Iron Bowl photo navigation">
+          {ethicsPhotos.map((label, index) => (
+            <button
+              key={label}
+              className={`gallery-dot ${activeEthicsPhoto === index ? 'active' : ''}`}
+              onClick={() => setActiveEthicsPhoto(index)}
+              aria-label={`Show AI Ethics Iron Bowl ${label}`}
+            />
           ))}
         </div>
       </div>
