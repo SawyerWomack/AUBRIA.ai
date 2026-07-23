@@ -750,6 +750,9 @@ h2.section-title span { color: var(--blue-bright); }
   opacity: 1;
   transform: none;
 }
+.gallery-carousel.single-slide {
+  grid-template-columns: minmax(0, 1fr);
+}
 .gallery-slide {
   min-width: 0;
 }
